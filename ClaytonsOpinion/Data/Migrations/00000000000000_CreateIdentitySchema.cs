@@ -216,5 +216,6 @@ namespace ClaytonsOpinion.Data.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
         }
+
     }
 }

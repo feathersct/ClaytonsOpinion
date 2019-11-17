@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using ClaytonsOpinion.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ClaytonsOpinion.Services;
+using ClaytonsOpinion.Services.ModelRepository;
 
 namespace ClaytonsOpinion
 {
@@ -36,9 +38,13 @@ namespace ClaytonsOpinion
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("ClaytonsOpinionDB")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped<IEntreeRespository, EntreeRepository>();
+            services.AddScoped<IOpinionRepository, OpinionRepository>();
+            services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

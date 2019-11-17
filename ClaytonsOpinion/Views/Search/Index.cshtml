@@ -1,0 +1,74 @@
+﻿@model ClaytonsOpinion.ViewModels.SearchIndexVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<input type="text" id="SearchText" placeholder="Search For Food Here..." asp-for="SearchText" class="form-control" />
+
+<ul id="entrees" style="list-style-type:none;">
+    <li>
+        <div style="padding:10px; border: 2px solid black;">
+            <h3>Beef Kebab and Chips</h3>
+            <p>Roasted beef on a stick with a side of chips and vegetables served with...</p>
+        </div>
+    </li>
+</ul>
+
+@Html.DropDownListFor(model => model.SelectedRestaurant, Model.Restaurants, null, new { @class = "form-control" })
+
+<ul id="restaurant_entrees" style="list-style-type:none;">
+
+</ul>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#SearchText').on("change paste keyup", function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Search/OnGetEntrees/?name=' + $('#SearchText').val(),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var res = '';
+
+                    $.each(result, function (key, value) {
+                        res += '<li><div style="border: 2px solid black;"> ' +
+                            '<h3>' + value.name + '</h3>' +
+                            '<p>' + value.notes + '</p>' +
+                            '</div></li>';
+                    });
+
+                    $('#entrees').html(res);
+                }
+            });
+
+        });
+
+        $('#SelectedRestaurant').on("change", function () {
+            $.ajax({
+                type: 'GET',
+                url: '/Search/OnGetEntreesByRestaurant/?id=' + $('#SelectedRestaurant').val(),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var res = '';
+
+                    $.each(result, function (key, value) {
+                        res += '<li><div style="border: 2px solid black;"> ' +
+                            '<h3>' + value.name + '</h3>' +
+                            '<p>' + value.notes + '</p>' +
+                            '</div></li>';
+                    });
+
+                    $('#restaurant_entrees').html(res);
+                }
+            });
+
+        });
+
+    });
+
+
+</script>
