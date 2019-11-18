@@ -4,7 +4,7 @@
 }
 
 
-<input type="text" id="SearchText" placeholder="Search For Food Here..." asp-for="SearchText" class="form-control" />
+@*<input type="text" id="SearchText" placeholder="Search For Food Here..." asp-for="SearchText" class="form-control" />
 
 <ul id="entrees" style="list-style-type:none;">
     <li>
@@ -13,18 +13,30 @@
             <p>Roasted beef on a stick with a side of chips and vegetables served with...</p>
         </div>
     </li>
-</ul>
+</ul>*@
 
 @Html.DropDownListFor(model => model.SelectedRestaurant, Model.Restaurants, null, new { @class = "form-control" })
 
-<ul id="restaurant_entrees" style="list-style-type:none;">
-
-</ul>
-
+<div id="restaurant_entrees" style="list-style-type:none;">
+    <div style="padding: 10px; margin: 5px; background-color: white; box-shadow: 0px 5px 5px rgba(68, 68, 68, 0.5)">
+        <h3>The Best Mac and Cheese</h3>
+        <p>
+            This is some of the best mac and cheese you will ever eat. It is packed with cheese and mac. You'll love it. It is a
+            boat load of calories but just ignore that.
+        </p>
+    </div>
+    <div style="padding: 10px; margin: 5px; background-color: white; box-shadow: 0px 5px 5px rgba(68, 68, 68, 0.5)">
+        <h3>Garlic Butter Steak and Potatoes</h3>
+        <p>
+            This is a flank steak with garlic and potatoes. That's about it. Nothing special to say about this dish. Just please get
+            over the mac and cheese. (It's not the best.)
+        </p>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#SearchText').on("change paste keyup", function () {
+        /*$('#SearchText').on("change paste keyup", function () {
             $.ajax({
                 type: 'GET',
                 url: '/Search/OnGetEntrees/?name=' + $('#SearchText').val(),
@@ -44,7 +56,7 @@
                 }
             });
 
-        });
+        });*/
 
         $('#SelectedRestaurant').on("change", function () {
             $.ajax({
@@ -56,10 +68,10 @@
                     var res = '';
 
                     $.each(result, function (key, value) {
-                        res += '<li><div style="border: 2px solid black;"> ' +
+                        res += '<div style="border: 2px solid black; padding: 10px; margin: 5px; background-color: white;"> ' +
                             '<h3>' + value.name + '</h3>' +
                             '<p>' + value.notes + '</p>' +
-                            '</div></li>';
+                            '</div>';
                     });
 
                     $('#restaurant_entrees').html(res);

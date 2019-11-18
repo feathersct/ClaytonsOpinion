@@ -1,0 +1,11 @@
+App that is sorta like yelp
+
+- You can review restaurants but at the same time you can review entrees
+- Give recommendations on what to get
+
+- There should be a page for owners of restaurants to add their restaurant and menus
+- There should be a page for normal users to login and review restaurants
+- Users can add photos to their reviews
+- Reviews will be completely anonymous, but the system will track them
+- They will get points based on how often they use the system
+

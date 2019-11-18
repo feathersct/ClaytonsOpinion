@@ -36,7 +36,9 @@ namespace ClaytonsOpinion.Services.ModelRepository
 
         public async Task<IEnumerable<Entree>> GetEntreesByRestaurantAsync(int restaurantId)
         {
-            return await FindByCondition(e => e.Restaurant.Id.Equals(restaurantId)).ToListAsync();
+            return await FindAll().Include(m => m.Restaurant).Where(e => e.Restaurant.Id == restaurantId).ToListAsync();
+
+            //return await FindByCondition(e => e.Restaurant.Id.Equals(restaurantId)).ToListAsync();
         }
 
         public Task<Entree> GetEntreeWithDetailsAsync(int entreeId)
