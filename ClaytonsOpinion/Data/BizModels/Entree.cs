@@ -15,5 +15,8 @@ namespace ClaytonsOpinion.Data.BizModels
         public decimal Price { get; set; }
         public string PriceSymbols { get; set; } // i.e. $-cheap, $$-semi expensive, $$$-expensive, $$$$-really expensive
         public string Notes { get; set; }
+        public int Likes { get; set; }
+        public int Dislikes { get; set; }
+        public int Bookmarks { get; set; }
     }
 }

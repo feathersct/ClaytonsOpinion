@@ -12,6 +12,9 @@ namespace ClaytonsOpinion.Services.ModelRepository
         Task<IEnumerable<Restaurant>> GetAllRestaurantsAsync();
         Task<Restaurant> GetRestaurantByIdAsync(int restaurantId);
         Task<Restaurant> GetRestaurantWithDetailsAsync(int restaurantId);
+
+        //TODO: Add in all the other non async methods
+        Restaurant GetRestaurantById(int restaurantId);
         void CreateRestaurant(Restaurant restaurant);
         void UpdateRestaurant(Restaurant restaurant);
         void DeleteRestaurant(Restaurant restaurant);

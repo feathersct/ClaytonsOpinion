@@ -18,19 +18,58 @@
 @Html.DropDownListFor(model => model.SelectedRestaurant, Model.Restaurants, null, new { @class = "form-control" })
 
 <div id="restaurant_entrees" style="list-style-type:none;">
-    <div style="padding: 10px; margin: 5px; background-color: white; box-shadow: 0px 5px 5px rgba(68, 68, 68, 0.5)">
-        <h3>The Best Mac and Cheese</h3>
-        <p>
-            This is some of the best mac and cheese you will ever eat. It is packed with cheese and mac. You'll love it. It is a
-            boat load of calories but just ignore that.
-        </p>
+    <div class="container popout-entree">
+        <div class="col-xs-5">
+            @*<img src="~/images/stock-food.jpg" style="height: 100%;"/>*@
+        </div>
+        <div class="col-xs-7">
+            @*<div class="col-xs-12" style="height: 30px; background-color: red;"></div>*@
+            <h4><b>Beef Kebab and Chips</b></h4>
+            <p>
+                This is some of the best mac and cheese you will ever eat. It is packed with cheese and mac. You'll love it. It is a
+                boat load of calories but just ignore that.
+            </p>
+            <div>
+                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <span class="fas fa-heart" style="color: red;"></span>
+                    <span>1,500</span>
+                </div>
+                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <span class="fas fa-heart-broken" style="color: red;"></span>
+                    <span>350</span>
+                </div>
+                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <span class="fas fa-bookmark"></span>
+                    <span>350</span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div style="padding: 10px; margin: 5px; background-color: white; box-shadow: 0px 5px 5px rgba(68, 68, 68, 0.5)">
-        <h3>Garlic Butter Steak and Potatoes</h3>
-        <p>
-            This is a flank steak with garlic and potatoes. That's about it. Nothing special to say about this dish. Just please get
-            over the mac and cheese. (It's not the best.)
-        </p>
+    <div class="container popout-entree">
+        <div class="col-xs-5">
+            <img />
+        </div>
+        <div class="col-xs-7">
+            <h4><b>Garlic Butter Steak and Potatoes</b></h4>
+            <p>
+                This is a flank steak with garlic and potatoes. That's about it. Nothing special to say about this dish. Just please get
+                over the mac and cheese. (It's not the best.)
+            </p>
+            <div>
+                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <span class="fas fa-heart" style="color: red;"></span>
+                    <span>1,500</span>
+                </div>
+                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <span class="fas fa-heart-broken" style="color: red;"></span>
+                    <span>350</span>
+                </div>
+                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <span class="fas fa-bookmark"></span>
+                    <span>350</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -68,10 +107,29 @@
                     var res = '';
 
                     $.each(result, function (key, value) {
-                        res += '<div style="border: 2px solid black; padding: 10px; margin: 5px; background-color: white;"> ' +
-                            '<h3>' + value.name + '</h3>' +
-                            '<p>' + value.notes + '</p>' +
-                            '</div>';
+                        res += '<div class="container popout-entree">' +
+                                    '<div class="col-xs-5">' +
+                                        '<img />' +
+                                    '</div>' +
+                                    '<div class="col-xs-7">' +
+                                        '<h4><b>' + value.name + '</b></h4>' +
+                                        '<p>' + value.notes + '</p>' +
+                                        '<div>' +
+                                            '<div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">' +
+                                                '<span class="fas fa-heart" style="color: red;"></span>' +
+                                                '<span>'+ value.likes +'</span>' +
+                                            '</div>' +
+                                            '<div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">' +
+                                                '<span class="fas fa-heart-broken" style="color: red;"></span>' +
+                                                '<span>' + value.dislikes +'</span>' +
+                                            '</div>' +
+                                            '<div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">' +
+                                                '<span class="fas fa-bookmark"></span>' +
+                                                '<span>' + value.bookmarks +'</span>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>';
                     });
 
                     $('#restaurant_entrees').html(res);

@@ -1,0 +1,120 @@
+﻿@model ClaytonsOpinion.ViewModels.RestaurantViewModel
+@{
+    ViewData["Title"] = "View";
+}
+<!-- 
+    This page should have a place to:
+        - Edit the restaurant
+        - Edit the Menu
+        - See what reviews have been placed for the restaurant
+        - Manage the photos for the restaurant
+        - Note specials for the restaurant
+        - Adjust any settings for the restaurant page
+    -->
+
+<h2>My Restaurant Details</h2>
+
+<div class="col-xs-8">
+    <div class="form-group">
+        <label asp-for="Restaurant.Name"></label>
+        <input asp-for="Restaurant.Name" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Restaurant.Type"></label>
+        <select asp-for="Restaurant.Type" asp-items="Html.GetEnumSelectList<ClaytonsOpinion.Data.Enums.RestaurantType>()" class="form-control">
+            <option></option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-10">
+        <h3>Menu Items</h3>
+        @foreach (var item in Model.AssociatedEntrees)
+        {
+            <div class="container-fluid popout-entree">
+                <div class="col-xs-9" style="border-right: 1px solid gray;">
+                    <div class="form-group">
+                        <label asp-for="@item.Name"></label>
+                        <input asp-for="@item.Name" class="form-control" />
+                    </div>
+
+                    <!-- Add Image Selector -->
+
+                    <div class="form-group">
+                        <label asp-for="@item.Notes"></label>
+                        <input asp-for="@item.Notes" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@item.Price"></label>
+                        <input asp-for="@item.Price" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@item.Type"></label>
+                        <select asp-for="@item.Type" asp-items="Html.GetEnumSelectList<ClaytonsOpinion.Data.Enums.EntreeType>()" class="form-control">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-3">
+                    <div style="height: 33%; padding: 10px 0 10px 0;"><p><b>Likes: </b>@item.Likes</p></div>
+                    <div style="height: 33%; padding: 10px 0 10px 0;"><p><b>Dislikes: </b>@item.Dislikes</p></div>
+                    <div style="height: 33%; padding: 10px 0 10px 0;"><p><b>Bookmarks: </b>@item.Bookmarks</p></div>
+                </div>
+            </div>
+        }
+
+        <div class="container-fluid popout-entree" style="display: none;" id="newEntreeForm">
+            @using (Html.BeginForm("CreateNewEntree", "Restaurant", FormMethod.Post))
+            {
+                @Html.HiddenFor(m=>m.Restaurant.Id)
+
+                <div class="form-group">
+                    <label asp-for="BlankEntree.Name"></label>
+                    <input asp-for="BlankEntree.Name" class="form-control" />
+                </div>
+
+                <!-- Add Image Selector -->
+
+                <div class="form-group">
+                    <label asp-for="BlankEntree.Notes"></label>
+                    <input asp-for="BlankEntree.Notes" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="BlankEntree.Price"></label>
+                    <input asp-for="BlankEntree.Price" class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="BlankEntree.Type"></label>
+                    <select asp-for="BlankEntree.Type" asp-items="Html.GetEnumSelectList<ClaytonsOpinion.Data.Enums.EntreeType>()" class="form-control">
+                        <option></option>
+                    </select>
+                </div>
+                <div class="col-sm-offset-8 col-sm-4 col-xs-12">
+                    <button class="btn btn-default">Add Entree</button>
+                </div>
+            }
+        </div>
+
+        <!-- Blank Entry for new Menu Items-->
+        <div class="container-fluid popout-entree" id="addNewEntree">
+            <div style="text-align: center;">
+                <button class="btn btn-default" style="background-color: transparent; border: none;"><i class="fas fa-plus fa-2x" style="color: green;"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#addNewEntree').on('click', function () {
+            $('#addNewEntree').hide();
+            $('#newEntreeForm').show();
+        });
+    });
+</script>

@@ -14,6 +14,12 @@ namespace ClaytonsOpinion.Services.ModelRepository
         Task<IEnumerable<Entree>> GetEntreesByRestaurantAsync(int restaurantId);
         Task<Entree> GetEntreeByIdAsync(int entreeId);
         Task<Entree> GetEntreeWithDetailsAsync(int entreeId);
+
+        List<Entree> GetAllEntrees();
+        List<Entree> GetEntreesByName(string name);
+        List<Entree> GetEntreesByRestaurant(int restaurantId);
+        Entree GetEntreeById(int entreeId);
+        Entree GetEntreeWithDetails(int entreeId);
         void CreateEntree(Entree entree);
         void UpdateEntree(Entree entree);
         void DeleteEntree(Entree entree);

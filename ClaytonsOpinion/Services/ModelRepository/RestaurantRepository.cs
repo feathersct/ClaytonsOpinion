@@ -16,7 +16,7 @@ namespace ClaytonsOpinion.Services.ModelRepository
         {
         }
 
-        // TODO: Do all other methods like this
+        #region Async Methods
         public async Task<IEnumerable<Restaurant>> GetAllRestaurantsAsync()
         {
             return await FindAll()
@@ -33,7 +33,16 @@ namespace ClaytonsOpinion.Services.ModelRepository
         {
             return await FindByCondition(r => r.Id.Equals(restaurantId)).FirstOrDefaultAsync();
         }
+        #endregion
 
+        #region Non-Async Methods
+        public Restaurant GetRestaurantById(int restaurantId)
+        {
+            return FindByCondition(r => r.Id.Equals(restaurantId)).FirstOrDefault();
+        }
+        #endregion
+
+        #region CRUD Methods
         public void UpdateRestaurant(Restaurant restaurant)
         {
             Update(restaurant);
@@ -48,5 +57,6 @@ namespace ClaytonsOpinion.Services.ModelRepository
         {
             Delete(restaurant);
         }
+        #endregion
     }
 }
