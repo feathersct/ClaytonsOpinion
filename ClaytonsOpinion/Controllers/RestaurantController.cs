@@ -36,14 +36,14 @@ namespace ClaytonsOpinion.Controllers
         public IActionResult CreateNewEntree(RestaurantViewModel vm)
         {
             if (vm.BlankEntree.Name == null)
-                return View("View", vm.Restaurant.Id); //TODO: change to return an error
+                return Redirect($"View/{vm.Restaurant.Id}"); //TODO: change to return an error
 
             vm.BlankEntree.Restaurant = restRepo.GetRestaurantById(vm.Restaurant.Id);
 
+            vm.BlankEntree.CalculatePriceSymbols();
             entreeRepo.CreateEntree(vm.BlankEntree);
 
-            return View("View", vm.Restaurant.Id);
+            return Redirect($"View/{vm.Restaurant.Id}");
         }
-
     }
 }

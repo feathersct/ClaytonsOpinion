@@ -30,17 +30,20 @@ namespace ClaytonsOpinion.Services.InterfaceAndAbstract
 
         public void Create(T entity)
         {
-            this.RepositoryContext.Set<T>().Add(entity);
+            RepositoryContext.Set<T>().Add(entity);
+            RepositoryContext.SaveChanges();
         }
 
         public void Update(T entity)
         {
             this.RepositoryContext.Set<T>().Update(entity);
+            RepositoryContext.SaveChanges();
         }
 
         public void Delete(T entity)
         {
             this.RepositoryContext.Set<T>().Remove(entity);
+            RepositoryContext.SaveChanges();
         }
     }
 }

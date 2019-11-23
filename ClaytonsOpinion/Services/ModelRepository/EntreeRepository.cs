@@ -82,17 +82,19 @@ namespace ClaytonsOpinion.Services.ModelRepository
         #region CRUD Methods
         public void UpdateEntree(Entree entree)
         {
-            throw new NotImplementedException();
+            entree.Restaurant = RepositoryContext.Restaurants.SingleOrDefault(m => m.Id == entree.Restaurant.Id);
+            Update(entree);
         }
 
         public void CreateEntree(Entree entree)
         {
-            throw new NotImplementedException();
+            entree.Restaurant = RepositoryContext.Restaurants.SingleOrDefault(m => m.Id == entree.Restaurant.Id);
+            Create(entree);
         }
 
         public void DeleteEntree(Entree entree)
         {
-            throw new NotImplementedException();
+            Delete(entree);
         }
         #endregion
 

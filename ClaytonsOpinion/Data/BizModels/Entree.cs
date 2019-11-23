@@ -1,6 +1,7 @@
 ﻿using ClaytonsOpinion.Data.Enums;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,5 +19,17 @@ namespace ClaytonsOpinion.Data.BizModels
         public int Likes { get; set; }
         public int Dislikes { get; set; }
         public int Bookmarks { get; set; }
+
+        public void CalculatePriceSymbols()
+        {
+            var symbols = "$";
+
+            for (int i = 0; i < this.Price; i += 10)
+            {
+                symbols += "$";
+            }
+
+            this.PriceSymbols = symbols;
+        }
     }
 }

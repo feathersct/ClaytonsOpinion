@@ -62,5 +62,19 @@ namespace ClaytonsOpinion.Controllers
             result = new JsonResult(response);
             return Json(result.Value);
         }
+
+        [HttpPost]
+        public async void RecordActionOnEntree(string action)
+        {
+            switch(action)
+            {
+                case "Like":
+                    break;
+                case "Dislike":
+                    break;
+                case "Bookmark":
+                    break;
+            }
+        }
     }
 }
