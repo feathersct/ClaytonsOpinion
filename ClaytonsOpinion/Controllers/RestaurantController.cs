@@ -1,5 +1,7 @@
-﻿using ClaytonsOpinion.Services.ModelRepository;
+﻿using ClaytonsOpinion.Data.BizModels;
+using ClaytonsOpinion.Services.ModelRepository;
 using ClaytonsOpinion.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,13 +15,16 @@ namespace ClaytonsOpinion.Controllers
         IEntreeRespository entreeRepo;
         IRestaurantRepository restRepo;
 
-        public RestaurantController(IEntreeRespository _entreeRepo, IRestaurantRepository _restRepo)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public RestaurantController(IEntreeRespository _entreeRepo, IRestaurantRepository _restRepo, UserManager<ApplicationUser> userManager)
         {
             entreeRepo = _entreeRepo;
             restRepo = _restRepo;
+            _userManager = userManager;
         }
 
-        [Route("Restaurant/{restaurantId}")]
+        //[Route("Restaurant/{restaurantId}")]
         [Route("Restaurant/View/{restaurantId}")]
         [HttpGet]
         public IActionResult View(int restaurantId)
@@ -30,6 +35,16 @@ namespace ClaytonsOpinion.Controllers
             vm.AssociatedEntrees = entreeRepo.GetEntreesByRestaurant(restaurantId);
 
             return View(vm);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> MyRestaurant()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var restaurant = restRepo.FindByCondition(m => m.RestaurantOwner.Id == user.Id).SingleOrDefault();
+
+            return Redirect($"View/{restaurant.Id}");
         }
 
         [HttpPost]

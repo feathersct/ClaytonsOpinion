@@ -20,5 +20,6 @@ namespace ClaytonsOpinion.Data.BizModels
         public State State { get; set; }
         public string ZipCode { get; set; }
         public RestaurantType? Type { get; set; }
+        public ApplicationUser RestaurantOwner { get; set; }
     }
 }

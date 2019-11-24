@@ -40,8 +40,14 @@ namespace ClaytonsOpinion
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("ClaytonsOpinionDB")));
-            services.AddDefaultIdentity<ApplicationUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IEntreeRespository, EntreeRepository>();
             services.AddScoped<IOpinionRepository, OpinionRepository>();
