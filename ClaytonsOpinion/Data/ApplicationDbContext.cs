@@ -9,6 +9,7 @@ namespace ClaytonsOpinion.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Entree> Entrees { get; set; }
 

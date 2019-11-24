@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * jQuery JavaScript Library v3.3.1
  * https://jquery.com/
  *
@@ -714,7 +714,7 @@ try {
 
 function Sizzle( selector, context, results, seed ) {
 	var m, i, elem, nid, match, groups, newSelector,
-		newContext = context && context.RestaurantDocument,
+		newContext = context && context.ownerDocument,
 
 		// nodeType defaults to 9, since context defaults to document
 		nodeType = context ? context.nodeType : 9;
@@ -731,7 +731,7 @@ function Sizzle( selector, context, results, seed ) {
 	// Try to shortcut find operations (as opposed to filters) in HTML documents
 	if ( !seed ) {
 
-		if ( ( context ? context.RestaurantDocument || context : preferredDoc ) !== document ) {
+		if ( ( context ? context.ownerDocument || context : preferredDoc ) !== document ) {
 			setDocument( context );
 		}
 		context = context || document;
@@ -1057,7 +1057,7 @@ support = Sizzle.support = {};
 isXML = Sizzle.isXML = function( elem ) {
 	// documentElement is verified for cases where it doesn't yet exist
 	// (such as loading iframes in IE - #4833)
-	var documentElement = elem && (elem.RestaurantDocument || elem).documentElement;
+	var documentElement = elem && (elem.ownerDocument || elem).documentElement;
 	return documentElement ? documentElement.nodeName !== "HTML" : false;
 };
 
@@ -1068,7 +1068,7 @@ isXML = Sizzle.isXML = function( elem ) {
  */
 setDocument = Sizzle.setDocument = function( node ) {
 	var hasCompare, subWindow,
-		doc = node ? node.RestaurantDocument || node : preferredDoc;
+		doc = node ? node.ownerDocument || node : preferredDoc;
 
 	// Return early if doc is invalid or already selected
 	if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
@@ -1387,7 +1387,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		}
 
 		// Calculate position if both inputs belong to the same document
-		compare = ( a.RestaurantDocument || a ) === ( b.RestaurantDocument || b ) ?
+		compare = ( a.ownerDocument || a ) === ( b.ownerDocument || b ) ?
 			a.compareDocumentPosition( b ) :
 
 			// Otherwise we know they are disconnected
@@ -1398,10 +1398,10 @@ setDocument = Sizzle.setDocument = function( node ) {
 			(!support.sortDetached && b.compareDocumentPosition( a ) === compare) ) {
 
 			// Choose the first element that is related to our preferred document
-			if ( a === document || a.RestaurantDocument === preferredDoc && contains(preferredDoc, a) ) {
+			if ( a === document || a.ownerDocument === preferredDoc && contains(preferredDoc, a) ) {
 				return -1;
 			}
-			if ( b === document || b.RestaurantDocument === preferredDoc && contains(preferredDoc, b) ) {
+			if ( b === document || b.ownerDocument === preferredDoc && contains(preferredDoc, b) ) {
 				return 1;
 			}
 
@@ -1476,7 +1476,7 @@ Sizzle.matches = function( expr, elements ) {
 
 Sizzle.matchesSelector = function( elem, expr ) {
 	// Set document vars if needed
-	if ( ( elem.RestaurantDocument || elem ) !== document ) {
+	if ( ( elem.ownerDocument || elem ) !== document ) {
 		setDocument( elem );
 	}
 
@@ -1506,7 +1506,7 @@ Sizzle.matchesSelector = function( elem, expr ) {
 
 Sizzle.contains = function( context, elem ) {
 	// Set document vars if needed
-	if ( ( context.RestaurantDocument || context ) !== document ) {
+	if ( ( context.ownerDocument || context ) !== document ) {
 		setDocument( context );
 	}
 	return contains( context, elem );
@@ -1514,7 +1514,7 @@ Sizzle.contains = function( context, elem ) {
 
 Sizzle.attr = function( elem, name ) {
 	// Set document vars if needed
-	if ( ( elem.RestaurantDocument || elem ) !== document ) {
+	if ( ( elem.ownerDocument || elem ) !== document ) {
 		setDocument( elem );
 	}
 
@@ -2490,7 +2490,7 @@ function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 			for ( ; i !== len && (elem = elems[i]) != null; i++ ) {
 				if ( byElement && elem ) {
 					j = 0;
-					if ( !context && elem.RestaurantDocument !== document ) {
+					if ( !context && elem.ownerDocument !== document ) {
 						setDocument( elem );
 						xml = !documentIsHTML;
 					}
@@ -2944,7 +2944,7 @@ var rootjQuery,
 					// Intentionally let the error be thrown if parseHTML is not present
 					jQuery.merge( this, jQuery.parseHTML(
 						match[ 1 ],
-						context && context.nodeType ? context.RestaurantDocument || context : document,
+						context && context.nodeType ? context.ownerDocument || context : document,
 						true
 					) );
 
@@ -3987,7 +3987,7 @@ function fcamelCase( all, letter ) {
 function camelCase( string ) {
 	return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 }
-var acceptData = function( Restaurant ) {
+var acceptData = function( owner ) {
 
 	// Accepts only:
 	//  - Node
@@ -3995,7 +3995,7 @@ var acceptData = function( Restaurant ) {
 	//    - Node.DOCUMENT_NODE
 	//  - Object
 	//    - Any
-	return Restaurant.nodeType === 1 || Restaurant.nodeType === 9 || !( +Restaurant.nodeType );
+	return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
 };
 
 
@@ -4009,10 +4009,10 @@ Data.uid = 1;
 
 Data.prototype = {
 
-	cache: function( Restaurant ) {
+	cache: function( owner ) {
 
-		// Check if the Restaurant object already has a cache
-		var value = Restaurant[ this.expando ];
+		// Check if the owner object already has a cache
+		var value = owner[ this.expando ];
 
 		// If not, create one
 		if ( !value ) {
@@ -4021,18 +4021,18 @@ Data.prototype = {
 			// We can accept data for non-element nodes in modern browsers,
 			// but we should not, see #8335.
 			// Always return an empty object.
-			if ( acceptData( Restaurant ) ) {
+			if ( acceptData( owner ) ) {
 
 				// If it is a node unlikely to be stringify-ed or looped over
 				// use plain assignment
-				if ( Restaurant.nodeType ) {
-					Restaurant[ this.expando ] = value;
+				if ( owner.nodeType ) {
+					owner[ this.expando ] = value;
 
 				// Otherwise secure it in a non-enumerable property
 				// configurable must be true to allow the property to be
 				// deleted when data is removed
 				} else {
-					Object.defineProperty( Restaurant, this.expando, {
+					Object.defineProperty( owner, this.expando, {
 						value: value,
 						configurable: true
 					} );
@@ -4042,16 +4042,16 @@ Data.prototype = {
 
 		return value;
 	},
-	set: function( Restaurant, data, value ) {
+	set: function( owner, data, value ) {
 		var prop,
-			cache = this.cache( Restaurant );
+			cache = this.cache( owner );
 
-		// Handle: [ Restaurant, key, value ] args
+		// Handle: [ owner, key, value ] args
 		// Always use camelCase key (gh-2257)
 		if ( typeof data === "string" ) {
 			cache[ camelCase( data ) ] = value;
 
-		// Handle: [ Restaurant, { properties } ] args
+		// Handle: [ owner, { properties } ] args
 		} else {
 
 			// Copy the properties one-by-one to the cache object
@@ -4061,14 +4061,14 @@ Data.prototype = {
 		}
 		return cache;
 	},
-	get: function( Restaurant, key ) {
+	get: function( owner, key ) {
 		return key === undefined ?
-			this.cache( Restaurant ) :
+			this.cache( owner ) :
 
 			// Always use camelCase key (gh-2257)
-			Restaurant[ this.expando ] && Restaurant[ this.expando ][ camelCase( key ) ];
+			owner[ this.expando ] && owner[ this.expando ][ camelCase( key ) ];
 	},
-	access: function( Restaurant, key, value ) {
+	access: function( owner, key, value ) {
 
 		// In cases where either:
 		//
@@ -4084,7 +4084,7 @@ Data.prototype = {
 		if ( key === undefined ||
 				( ( key && typeof key === "string" ) && value === undefined ) ) {
 
-			return this.get( Restaurant, key );
+			return this.get( owner, key );
 		}
 
 		// When the key is not a string, or both a key and value
@@ -4093,15 +4093,15 @@ Data.prototype = {
 		//   1. An object of properties
 		//   2. A key and value
 		//
-		this.set( Restaurant, key, value );
+		this.set( owner, key, value );
 
 		// Since the "set" path can have two possible entry points
 		// return the expected data based on which path was taken[*]
 		return value !== undefined ? value : key;
 	},
-	remove: function( Restaurant, key ) {
+	remove: function( owner, key ) {
 		var i,
-			cache = Restaurant[ this.expando ];
+			cache = owner[ this.expando ];
 
 		if ( cache === undefined ) {
 			return;
@@ -4139,15 +4139,15 @@ Data.prototype = {
 			// Webkit & Blink performance suffers when deleting properties
 			// from DOM nodes, so set to undefined instead
 			// https://bugs.chromium.org/p/chromium/issues/detail?id=378607 (bug restricted)
-			if ( Restaurant.nodeType ) {
-				Restaurant[ this.expando ] = undefined;
+			if ( owner.nodeType ) {
+				owner[ this.expando ] = undefined;
 			} else {
-				delete Restaurant[ this.expando ];
+				delete owner[ this.expando ];
 			}
 		}
 	},
-	hasData: function( Restaurant ) {
-		var cache = Restaurant[ this.expando ];
+	hasData: function( owner ) {
+		var cache = owner[ this.expando ];
 		return cache !== undefined && !jQuery.isEmptyObject( cache );
 	}
 };
@@ -4480,7 +4480,7 @@ var isHiddenWithinTree = function( elem, el ) {
 			// Support: Firefox <=43 - 45
 			// Disconnected elements can have computed display: none, so first confirm that elem is
 			// in the document.
-			jQuery.contains( elem.RestaurantDocument, elem ) &&
+			jQuery.contains( elem.ownerDocument, elem ) &&
 
 			jQuery.css( elem, "display" ) === "none";
 	};
@@ -4577,7 +4577,7 @@ var defaultDisplayMap = {};
 
 function getDefaultDisplay( elem ) {
 	var temp,
-		doc = elem.RestaurantDocument,
+		doc = elem.ownerDocument,
 		nodeName = elem.nodeName,
 		display = defaultDisplayMap[ nodeName ];
 
@@ -4805,7 +4805,7 @@ function buildFragment( elems, context, scripts, selection, ignored ) {
 			continue;
 		}
 
-		contains = jQuery.contains( elem.RestaurantDocument, elem );
+		contains = jQuery.contains( elem.ownerDocument, elem );
 
 		// Append to fragment
 		tmp = getAll( fragment.appendChild( elem ), "script" );
@@ -5706,7 +5706,7 @@ function domManip( collection, args, callback, ignored ) {
 	}
 
 	if ( l ) {
-		fragment = buildFragment( args, collection[ 0 ].RestaurantDocument, false, collection, ignored );
+		fragment = buildFragment( args, collection[ 0 ].ownerDocument, false, collection, ignored );
 		first = fragment.firstChild;
 
 		if ( fragment.childNodes.length === 1 ) {
@@ -5740,7 +5740,7 @@ function domManip( collection, args, callback, ignored ) {
 			}
 
 			if ( hasScripts ) {
-				doc = scripts[ scripts.length - 1 ].RestaurantDocument;
+				doc = scripts[ scripts.length - 1 ].ownerDocument;
 
 				// Reenable scripts
 				jQuery.map( scripts, restoreScript );
@@ -5781,7 +5781,7 @@ function remove( elem, selector, keepData ) {
 		}
 
 		if ( node.parentNode ) {
-			if ( keepData && jQuery.contains( node.RestaurantDocument, node ) ) {
+			if ( keepData && jQuery.contains( node.ownerDocument, node ) ) {
 				setGlobalEval( getAll( node, "script" ) );
 			}
 			node.parentNode.removeChild( node );
@@ -5799,7 +5799,7 @@ jQuery.extend( {
 	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
 		var i, l, srcElements, destElements,
 			clone = elem.cloneNode( true ),
-			inPage = jQuery.contains( elem.RestaurantDocument, elem );
+			inPage = jQuery.contains( elem.ownerDocument, elem );
 
 		// Fix IE cloning issues
 		if ( !support.noCloneChecked && ( elem.nodeType === 1 || elem.nodeType === 11 ) &&
@@ -6046,7 +6046,7 @@ var getStyles = function( elem ) {
 		// Support: IE <=11 only, Firefox <=30 (#15098, #14150)
 		// IE throws on elements created in popups
 		// FF meanwhile throws on frame elements through "defaultView.getComputedStyle"
-		var view = elem.RestaurantDocument.defaultView;
+		var view = elem.ownerDocument.defaultView;
 
 		if ( !view || !view.opener ) {
 			view = window;
@@ -6167,7 +6167,7 @@ function curCSS( elem, name, computed ) {
 	if ( computed ) {
 		ret = computed.getPropertyValue( name ) || computed[ name ];
 
-		if ( ret === "" && !jQuery.contains( elem.RestaurantDocument, elem ) ) {
+		if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
 			ret = jQuery.style( elem, name );
 		}
 
@@ -8216,7 +8216,7 @@ jQuery.extend( jQuery.event, {
 		}
 
 		// Determine event propagation path in advance, per W3C events spec (#9951)
-		// Bubble up to document, then to window; watch for a global RestaurantDocument var (#9724)
+		// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
 		if ( !onlyHandlers && !special.noBubble && !isWindow( elem ) ) {
 
 			bubbleType = special.delegateType || type;
@@ -8229,7 +8229,7 @@ jQuery.extend( jQuery.event, {
 			}
 
 			// Only add window if we got to document (e.g., not plain obj or detached DOM)
-			if ( tmp === ( elem.RestaurantDocument || document ) ) {
+			if ( tmp === ( elem.ownerDocument || document ) ) {
 				eventPath.push( tmp.defaultView || tmp.parentWindow || window );
 			}
 		}
@@ -8354,7 +8354,7 @@ if ( !support.focusin ) {
 
 		jQuery.event.special[ fix ] = {
 			setup: function() {
-				var doc = this.RestaurantDocument || this,
+				var doc = this.ownerDocument || this,
 					attaches = dataPriv.access( doc, fix );
 
 				if ( !attaches ) {
@@ -8363,7 +8363,7 @@ if ( !support.focusin ) {
 				dataPriv.access( doc, fix, ( attaches || 0 ) + 1 );
 			},
 			teardown: function() {
-				var doc = this.RestaurantDocument || this,
+				var doc = this.ownerDocument || this,
 					attaches = dataPriv.access( doc, fix ) - 1;
 
 				if ( !attaches ) {
@@ -9388,7 +9388,7 @@ jQuery.fn.extend( {
 			}
 
 			// The elements to wrap the target around
-			wrap = jQuery( html, this[ 0 ].RestaurantDocument ).eq( 0 ).clone( true );
+			wrap = jQuery( html, this[ 0 ].ownerDocument ).eq( 0 ).clone( true );
 
 			if ( this[ 0 ].parentNode ) {
 				wrap.insertBefore( this[ 0 ] );
@@ -10023,7 +10023,7 @@ jQuery.fn.extend( {
 
 		// Get document-relative position by adding viewport scroll to viewport-relative gBCR
 		rect = elem.getBoundingClientRect();
-		win = elem.RestaurantDocument.defaultView;
+		win = elem.ownerDocument.defaultView;
 		return {
 			top: rect.top + win.pageYOffset,
 			left: rect.left + win.pageXOffset
@@ -10052,7 +10052,7 @@ jQuery.fn.extend( {
 
 			// Account for the *real* offset parent, which can be the document or its root element
 			// when a statically positioned element is identified
-			doc = elem.RestaurantDocument;
+			doc = elem.ownerDocument;
 			offsetParent = elem.offsetParent || doc.documentElement;
 			while ( offsetParent &&
 				( offsetParent === doc.body || offsetParent === doc.documentElement ) &&

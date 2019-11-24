@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ClaytonsOpinion.Services;
 using ClaytonsOpinion.Services.ModelRepository;
+using ClaytonsOpinion.Data.BizModels;
 
 namespace ClaytonsOpinion
 {
@@ -39,7 +40,7 @@ namespace ClaytonsOpinion
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("ClaytonsOpinionDB")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddScoped<IEntreeRespository, EntreeRepository>();
