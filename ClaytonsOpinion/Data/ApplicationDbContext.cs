@@ -12,6 +12,7 @@ namespace ClaytonsOpinion.Data
         public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Entree> Entrees { get; set; }
+        public DbSet<EntreeReview> EntreeReviews { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ClaytonsOpinion.Services.ModelRepository
 {
-    public interface IEntreeRespository : IRepositoryBase<Entree>
+    public interface IEntreeReviewRespository : IRepositoryBase<Entree>
     {
         Task<IEnumerable<Entree>> GetAllEntreesAsync();
         Task<IEnumerable<Entree>> GetEntreesByNameAsync(string name);
@@ -23,5 +23,7 @@ namespace ClaytonsOpinion.Services.ModelRepository
         void CreateEntree(Entree entree);
         void UpdateEntree(Entree entree);
         void DeleteEntree(Entree entree);
+
+        List<EntreeReview> GetEntreeReviews(Entree entree);
     }
 }

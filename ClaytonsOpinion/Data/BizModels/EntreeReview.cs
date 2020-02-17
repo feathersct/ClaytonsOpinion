@@ -9,7 +9,7 @@ namespace ClaytonsOpinion.Data.BizModels
     {
         public int Id { get; set; }
         public Entree ReviewedEntree { get; set; }
-        public string Username { get; set; } //TODO: Eventually make this be a user
+        public ApplicationUser User { get; set; } 
         public DateTime ReviewDateTime { get; set; }
         public string Comment { get; set; }
 

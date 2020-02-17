@@ -1,0 +1,78 @@
+﻿@model ClaytonsOpinion.ViewModels.ReviewEntreeVM
+@{
+    ViewData["Title"] = "Review";
+}
+
+<h2>@Model.Entree.Name</h2> <!-- make center -->
+
+<!-- Insert Picture at the Top here -->
+<div class="col-xs-12" style="height: 300px; background-color: navy;">
+
+</div>
+
+<div class="row">
+    <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
+        <button><span class="fas fa-heart" style="color: red;"></span></button>
+        <span>@Model.Entree.Likes</span>
+    </div>
+    <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
+        <span class="fas fa-heart-broken" style="color: red;"></span>
+        <span>@Model.Entree.Dislikes</span>
+    </div>
+    <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
+        <span class="fas fa-bookmark"></span>
+        <span>@Model.Entree.Bookmarks</span>
+    </div>
+    <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
+        <span class="fas fa-comment"></span>
+        <span>Insert Count</span>
+    </div>
+</div>
+
+<h3>Reviews</h3>
+
+<div class="col-xs-12">
+    <div class="col-xs-2">
+        <!-- User Picture or Symbols -->
+    </div>
+    <div class="col-xs-10">
+        <div class="col-xs-12">
+            <div class="col-xs-6">
+                <p><b>Clayton Feathers</b></p>
+            </div>
+            <div class="col-xs-6" style="text-align: right;">
+                <p>12/24/2009</p>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <p>Roasted beef on a stick with a side of chips and vegetables served with...</p>
+        </div>
+    </div>
+</div>
+
+@foreach(var review in Model.Reviews)
+{
+    <div class="col-xs-12">
+        <div class="col-xs-2">
+            <!-- User Picture or Symbols -->
+        </div>
+        <div class="col-xs-10">
+            <div class="col-xs-12">
+                <div class="col-xs-6">
+                    <p><b>@review.User.FirstName @review.User.LastName</b></p>
+                </div>
+                <div class="col-xs-6" style="text-align: right;">
+                    <p>@review.ReviewDateTime.ToString("dd'/'MM'/'yyyy")</p>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <p>@review.Comment</p>
+            </div>
+        </div>
+    </div>
+}
+
+<form asp-controller="Restaurant" asp-action="CreateReview" method="post">
+    <textarea asp-for="BlankReview.Comment"/>
+    <button class="btn btn-default" type="button">Submit</button>
+</form>

@@ -12,12 +12,12 @@ namespace ClaytonsOpinion.Controllers
 {
     public class RestaurantController : Controller
     {
-        IEntreeRespository entreeRepo;
+        IEntreeReviewRespository entreeRepo;
         IRestaurantRepository restRepo;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public RestaurantController(IEntreeRespository _entreeRepo, IRestaurantRepository _restRepo, UserManager<ApplicationUser> userManager)
+        public RestaurantController(IEntreeReviewRespository _entreeRepo, IRestaurantRepository _restRepo, UserManager<ApplicationUser> userManager)
         {
             entreeRepo = _entreeRepo;
             restRepo = _restRepo;
@@ -60,5 +60,39 @@ namespace ClaytonsOpinion.Controllers
 
             return Redirect($"View/{vm.Restaurant.Id}");
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateRestaurantVM vm)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            vm.Restaurant.RestaurantOwner = user;
+
+            restRepo.Create(vm.Restaurant);
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var restaurant = restRepo.GetRestaurantById(id);
+
+            return View(restaurant);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Restaurant restaurant)
+        {
+            restRepo.UpdateRestaurant(restaurant);
+
+            return View(restaurant);
+        }
+
     }
 }

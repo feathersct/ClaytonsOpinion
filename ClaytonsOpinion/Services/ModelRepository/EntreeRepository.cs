@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClaytonsOpinion.Services.ModelRepository
 {
-    public class EntreeRepository : RepositoryBase<Entree>, IEntreeRespository
+    public class EntreeRepository : RepositoryBase<Entree>, IEntreeReviewRespository
     {
         public EntreeRepository(ApplicationDbContext repositoryContext) 
             : base(repositoryContext)
@@ -25,7 +25,7 @@ namespace ClaytonsOpinion.Services.ModelRepository
 
         public async Task<Entree> GetEntreeByIdAsync(int entreeId)
         {
-            return await FindByCondition(e => e.Id.Equals(entreeId)).FirstOrDefaultAsync();
+            return await FindByCondition(e => e.Id.Equals(entreeId)).Include(m => m.Restaurant).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Entree>> GetEntreesByNameAsync(string name)
@@ -70,7 +70,7 @@ namespace ClaytonsOpinion.Services.ModelRepository
 
         public Entree GetEntreeById(int entreeId)
         {
-            return FindByCondition(e => e.Id.Equals(entreeId)).FirstOrDefault();
+            return FindByCondition(e => e.Id.Equals(entreeId)).Include(m => m.Restaurant).FirstOrDefault();
         }
 
         public Entree GetEntreeWithDetails(int entreeId)
@@ -96,7 +96,15 @@ namespace ClaytonsOpinion.Services.ModelRepository
         {
             Delete(entree);
         }
+
         #endregion
 
+        #region Entree Review Section
+        public List<EntreeReview> GetEntreeReviews(Entree entree)
+        {
+            return this.RepositoryContext.EntreeReviews.Where(r => r.ReviewedEntree.Id == entree.Id).Include(e => e.User).Include(e => e.ReviewedEntree).ToList();
+        }
+
+        #endregion
     }
 }

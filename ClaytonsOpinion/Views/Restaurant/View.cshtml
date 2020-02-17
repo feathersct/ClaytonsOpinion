@@ -12,21 +12,8 @@
         - Adjust any settings for the restaurant page
     -->
 
-<h2>My Restaurant Details</h2>
-
-<div class="col-xs-8">
-    <div class="form-group">
-        <label asp-for="Restaurant.Name"></label>
-        <input asp-for="Restaurant.Name" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Restaurant.Type"></label>
-        <select asp-for="Restaurant.Type" asp-items="Html.GetEnumSelectList<ClaytonsOpinion.Data.Enums.RestaurantType>()" class="form-control">
-            <option></option>
-        </select>
-    </div>
-</div>
+<h2>@Model.Restaurant.Name Details</h2>
+<a href="/Restaurant/Edit/@Model.Restaurant.Id">Edit Restaurant</a>
 
 <div class="row">
     <div class="col-xs-10">

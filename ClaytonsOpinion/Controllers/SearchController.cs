@@ -12,10 +12,10 @@ namespace ClaytonsOpinion.Controllers
 {
     public class SearchController : Controller
     {
-        IEntreeRespository entreeRepo;
+        IEntreeReviewRespository entreeRepo;
         IRestaurantRepository restRepo;
 
-        public SearchController(IEntreeRespository _entreeRepo, IRestaurantRepository _restRepo)
+        public SearchController(IEntreeReviewRespository _entreeRepo, IRestaurantRepository _restRepo)
         {
             entreeRepo = _entreeRepo;
             restRepo = _restRepo;
@@ -35,6 +35,21 @@ namespace ClaytonsOpinion.Controllers
 
             return View(vm);
         }
+
+        [HttpGet]
+        public IActionResult Review(int entreeId)
+        {
+            var vm = new ReviewEntreeVM
+            {
+                Entree = entreeRepo.GetEntreeById(entreeId),
+            };
+
+            vm.Reviews = entreeRepo.GetEntreeReviews(vm.Entree);
+
+            return View(vm);
+        }
+
+        #region Ajax Methods
 
         [HttpGet]
         public async Task<JsonResult> OnGetEntrees(string name)
@@ -64,17 +79,38 @@ namespace ClaytonsOpinion.Controllers
         }
 
         [HttpPost]
-        public async void RecordActionOnEntree(string action)
+        public JsonResult OnActionEvent(string actionname, string id)
         {
-            switch(action)
+            var pass = false;
+            var exception = "";
+            try
             {
-                case "Like":
-                    break;
-                case "Dislike":
-                    break;
-                case "Bookmark":
-                    break;
+                var entree = entreeRepo.GetEntreeById(int.Parse(id));
+
+                switch (actionname)
+                {
+                    case "like":
+                        entree.Likes += 1;
+                        break;
+                    case "dislike":
+                        entree.Dislikes += 1;
+                        break;
+                    case "bookmark":
+                        entree.Bookmarks += 1;
+                        break;
+                }
+
+                entreeRepo.UpdateEntree(entree);
+                pass = true;
+                exception = "Action was successful";
             }
+            catch(Exception ex)
+            {
+                exception = ex.ToString();
+            }
+
+            return new JsonResult(new Tuple<bool, string>(pass, exception));
         }
+        #endregion
     }
 }

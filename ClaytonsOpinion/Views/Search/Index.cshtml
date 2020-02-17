@@ -30,17 +30,20 @@
                 boat load of calories but just ignore that.
             </p>
             <div>
-                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
-                    <span class="fas fa-heart" style="color: red;"></span>
+                <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <button><span class="fas fa-heart" style="color: red;"></span></button>
                     <span>1,500</span>
                 </div>
-                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
                     <span class="fas fa-heart-broken" style="color: red;"></span>
                     <span>350</span>
                 </div>
-                <div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">
+                <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
                     <span class="fas fa-bookmark"></span>
                     <span>350</span>
+                </div>
+                <div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">
+                    <a href="/Search/Review/"><span class="fas fa-comment"></span></a>
                 </div>
             </div>
         </div>
@@ -97,7 +100,33 @@
 
         });*/
 
-        $('#SelectedRestaurant').on("change", function () {
+        $(document).on('click', '.search_action', function () {
+            var actionevent = this.id.split("_");
+            var url = '/Search/OnActionEvent?actionname=' + actionevent[0] + '&id=' + actionevent[1];
+
+            $.ajax({
+                type: 'POST',
+                url: url,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    alert(result.item2);
+
+                    //var res = '';
+
+                    //$.each(result, function (key, value) {
+                    //    res += '<li><div style="border: 2px solid black;"> ' +
+                    //        '<h3>' + value.name + '</h3>' +
+                    //        '<p>' + value.notes + '</p>' +
+                    //        '</div></li>';
+                    //});
+
+                    //$('#entrees').html(res);
+                }
+            });
+        });
+
+        $('#SelectedRestaurant').change(function () {
             $.ajax({
                 type: 'GET',
                 url: '/Search/OnGetEntreesByRestaurant/?id=' + $('#SelectedRestaurant').val(),
@@ -116,16 +145,19 @@
                                         '<p>' + value.notes + '</p>' +
                                         '<div>' +
                                             '<div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">' +
-                                                '<span class="fas fa-heart" style="color: red;"></span>' +
+                                                '<button class="search_action" id="like_' + value.id + '"><span class="fas fa-heart" style="color: red;"></span></button>' +
                                                 '<span>'+ value.likes +'</span>' +
                                             '</div>' +
                                             '<div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">' +
-                                                '<span class="fas fa-heart-broken" style="color: red;"></span>' +
+                                                '<button class="search_action" id="dislike_' + value.id + '"><span class="fas fa-heart-broken" style="color: red;"></span></button>' +
                                                 '<span>' + value.dislikes +'</span>' +
                                             '</div>' +
                                             '<div class="col-xs-4" style="height: 30px; padding: 0px 0px 0px 0px;">' +
-                                                '<span class="fas fa-bookmark"></span>' +
+                                                '<button class="search_action" id="bookmark_' + value.id + '"><span class="fas fa-bookmark"></span></button>' +
                                                 '<span>' + value.bookmarks +'</span>' +
+                                            '</div>' +
+                                            '<div class="col-xs-3" style="height: 30px; padding: 0px 0px 0px 0px;">' +
+                                                '<a href="/Search/Review/' + value.id + '"><span class="fas fa-comment"></span></a>' +
                                             '</div>' +
                                         '</div>' +
                                     '</div>' +

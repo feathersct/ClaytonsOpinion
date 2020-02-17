@@ -49,7 +49,7 @@ namespace ClaytonsOpinion
 
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddScoped<IEntreeRespository, EntreeRepository>();
+            services.AddScoped<IEntreeReviewRespository, EntreeRepository>();
             services.AddScoped<IOpinionRepository, OpinionRepository>();
             services.AddScoped<IRestaurantRepository, RestaurantRepository>();
 

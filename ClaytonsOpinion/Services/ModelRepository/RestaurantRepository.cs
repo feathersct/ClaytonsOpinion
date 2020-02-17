@@ -57,6 +57,8 @@ namespace ClaytonsOpinion.Services.ModelRepository
         {
             Delete(restaurant);
         }
+
+        
         #endregion
     }
 }
